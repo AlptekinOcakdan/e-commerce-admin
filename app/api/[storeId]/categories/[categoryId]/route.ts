@@ -23,7 +23,7 @@ export async function GET(req: Request, {params}: { params: { categoryId: string
         console.log('[CATEGORY_GET]', error);
         return new NextResponse("Internal error", {status: 500});
     }
-};
+}
 
 export async function DELETE(req: Request, {params}: { params: { categoryId: string, storeId: string } }) {
     try {
@@ -59,7 +59,7 @@ export async function DELETE(req: Request, {params}: { params: { categoryId: str
         console.log('[CATEGORY_DELETE]', error);
         return new NextResponse("Internal error", {status: 500});
     }
-};
+}
 
 
 export async function PATCH(req: Request, {params}: { params: { categoryId: string, storeId: string } }) {
@@ -110,4 +110,4 @@ export async function PATCH(req: Request, {params}: { params: { categoryId: stri
         console.log('[CATEGORY_PATCH]', error);
         return new NextResponse("Internal error", {status: 500});
     }
-};
+}

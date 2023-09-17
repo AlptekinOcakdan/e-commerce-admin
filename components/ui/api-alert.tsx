@@ -1,15 +1,15 @@
-import { Copy, Server } from "lucide-react";
-import { toast } from "react-hot-toast";
+import {Copy, Server} from "lucide-react";
+import {toast} from "react-hot-toast";
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge, BadgeProps } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {Badge, BadgeProps} from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
 
 interface ApiAlertProps {
     title: string;
     description: string;
     variant: 'public' | 'admin',
-};
+}
 
 
 const textMap: Record<ApiAlertProps["variant"], string> = {
@@ -22,7 +22,8 @@ const variantMap: Record<ApiAlertProps["variant"], BadgeProps["variant"]> = {
     admin: 'destructive'
 };
 
-export const ApiAlert: React.FC<ApiAlertProps> = ({title, description, variant = "public"}) => {
+export const ApiAlert: React.FC<ApiAlertProps> = ({title, description, variant = "public"
+}) => {
     const onCopy = (description: string) => {
         navigator.clipboard.writeText(description);
         toast.success('API Route copied to clipboard.');
@@ -30,7 +31,7 @@ export const ApiAlert: React.FC<ApiAlertProps> = ({title, description, variant =
 
     return (
         <Alert>
-            <Server className="h-4 w-4" />
+            <Server className="h-4 w-4"/>
             <AlertTitle className="flex items-center gap-x-2">
                 {title}
                 <Badge variant={variantMap[variant]}>
@@ -42,7 +43,7 @@ export const ApiAlert: React.FC<ApiAlertProps> = ({title, description, variant =
                     {description}
                 </code>
                 <Button variant="outline" size="sm" onClick={() => onCopy(description)}>
-                    <Copy className="h-4 w-4" />
+                    <Copy className="h-4 w-4"/>
                 </Button>
             </AlertDescription>
         </Alert>

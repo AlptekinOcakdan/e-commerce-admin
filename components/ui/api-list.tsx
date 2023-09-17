@@ -1,27 +1,27 @@
-"use client"
+"use client";
 
-import React from "react";
-import {useParams} from "next/navigation";
+import {ApiAlert} from "@/components/ui/api-alert";
 import {useOrigin} from "@/hooks/use-origin";
-import {ApiAlert} from "@/components/ui/apiAlert";
+import {useParams} from "next/navigation";
+import React from "react";
 
 interface ApiListProps {
-    entityName:string;
-    entityIdName:string
+    entityName: string;
+    entityIdName: string;
 }
 
-export const ApiList:React.FC<ApiListProps>= ({entityName,entityIdName}) => {
+export const ApiList: React.FC<ApiListProps> = ({entityName, entityIdName,}) => {
     const params = useParams();
     const origin = useOrigin();
+    const baseUrl = `${origin}/api/${params.storeId}`;
 
-    const baseUrl = `${origin}/api/${params.storeId}`
     return (
-        <div>
-            <ApiAlert title="GET" description={`${baseUrl}/${entityName}`} variant="public"/>
-            <ApiAlert title="GET" description={`${baseUrl}/${entityName}/{${entityIdName}}`} variant="public"/>
-            <ApiAlert title="POST" description={`${baseUrl}/${entityName}`} variant="admin"/>
-            <ApiAlert title="PATCH" description={`${baseUrl}/${entityName}/{${entityIdName}}`} variant="admin"/>
-            <ApiAlert title="DELETE" description={`${baseUrl}/${entityName}/{${entityIdName}}`} variant="admin"/>
-        </div>
-    )
-}
+        <>
+            <ApiAlert title="GET" variant="public" description={`${baseUrl}/${entityName}`}/>
+            <ApiAlert title="GET" variant="public" description={`${baseUrl}/${entityName}/{${entityIdName}}`}/>
+            <ApiAlert title="POST" variant="admin" description={`${baseUrl}/${entityName}`}/>
+            <ApiAlert title="PATCH" variant="admin" description={`${baseUrl}/${entityName}/{${entityIdName}}`}/>
+            <ApiAlert title="DELETE" variant="admin" description={`${baseUrl}/${entityName}/{${entityIdName}}`}/>
+        </>
+    );
+};

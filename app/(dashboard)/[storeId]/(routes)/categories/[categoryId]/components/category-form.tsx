@@ -1,47 +1,55 @@
-"use client";
+"use client"
 
-import React, {useState} from "react";
-import {useForm} from "react-hook-form";
-import {toast} from "react-hot-toast";
-import {Trash} from "lucide-react";
-import {useParams, useRouter} from "next/navigation";
-import axios from "axios";
-import {Billboard, Category} from "@prisma/client";
-import {z} from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Heading} from "@/components/ui/Heading";
-import {Button} from "@/components/ui/button";
-import {Separator} from "@/components/ui/separator";
-import {Input} from "@/components/ui/input";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {AlertModal} from "@/components/modals/alert-modal";
+import * as z from "zod"
+import axios from "axios"
+import React, {useState} from "react"
+import {zodResolver} from "@hookform/resolvers/zod"
+import {useForm} from "react-hook-form"
+import {toast} from "react-hot-toast"
+import {Trash} from "lucide-react"
+import {Billboard, Category} from "@prisma/client"
+import {useParams, useRouter} from "next/navigation"
 
-const formSchema = z.object({name: z.string().min(1), billboardId: z.string().min(1),});
+import {Input} from "@/components/ui/input"
+import {Button} from "@/components/ui/button"
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form"
+import {Separator} from "@/components/ui/separator"
+import {Heading} from "@/components/ui/Heading"
+import {AlertModal} from "@/components/modals/alert-modal"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
+
+const formSchema = z.object({
+    name: z.string().min(2),
+    billboardId: z.string().min(1),
+});
 
 type CategoryFormValues = z.infer<typeof formSchema>
 
 interface CategoryFormProps {
     initialData: Category | null;
     billboards: Billboard[];
-}
+};
 
 export const CategoryForm: React.FC<CategoryFormProps> = ({initialData, billboards}) => {
     const params = useParams();
     const router = useRouter();
 
     const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
 
-    const title = initialData ? "Edit Category" : "Create Category";
-    const description = initialData ? "Edit a Category" : "Add a new Category";
-    const toastMessage = initialData ? "Category updated." : "Category created.";
-    const action = initialData ? "Save changes" : "Create";
+    const title = initialData ? 'Edit category' : 'Create category';
+    const description = initialData ? 'Edit a category.' : 'Add a new category';
+    const toastMessage = initialData ? 'Category updated.' : 'Category created.';
+    const action = initialData ? 'Save changes' : 'Create';
 
     const form = useForm<CategoryFormValues>({
         resolver: zodResolver(formSchema),
-        defaultValues: initialData || {name: '', billboardId: ''}
-    })
+        defaultValues: initialData || {
+            name: '',
+            billboardId: '',
+        }
+    });
+
     const onSubmit = async (data: CategoryFormValues) => {
         try {
             setLoading(true);
@@ -51,14 +59,14 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({initialData, billboar
                 await axios.post(`/api/${params.storeId}/categories`, data);
             }
             router.refresh();
-            router.push(`/${params.storeId}/categories`)
+            router.push(`/${params.storeId}/categories`);
             toast.success(toastMessage);
-        } catch (error) {
-            toast.error("Something went wrong");
+        } catch (error: any) {
+            toast.error('Something went wrong.');
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     const onDelete = async () => {
         try {
@@ -66,9 +74,9 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({initialData, billboar
             await axios.delete(`/api/${params.storeId}/categories/${params.categoryId}`);
             router.refresh();
             router.push(`/${params.storeId}/categories`);
-            toast.success("Category deleted.");
-        } catch (error) {
-            toast.error("Make sure you removed all categories using this category first.");
+            toast.success('Category deleted.');
+        } catch (error: any) {
+            toast.error('Make sure you removed all products using this category first.');
         } finally {
             setLoading(false);
             setOpen(false);
@@ -124,5 +132,5 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({initialData, billboar
                 </form>
             </Form>
         </>
-    )
-}
+    );
+};

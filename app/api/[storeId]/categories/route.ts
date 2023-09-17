@@ -49,7 +49,7 @@ export async function POST(req: Request, {params}: { params: { storeId: string }
         console.log('[CATEGORIES_POST]', error);
         return new NextResponse("Internal error", {status: 500});
     }
-};
+}
 
 export async function GET(req: Request, {params}: { params: { storeId: string } }) {
     try {
@@ -68,4 +68,4 @@ export async function GET(req: Request, {params}: { params: { storeId: string } 
         console.log('[CATEGORIES_GET]', error);
         return new NextResponse("Internal error", {status: 500});
     }
-};
+}
