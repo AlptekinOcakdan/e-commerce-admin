@@ -2,6 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
+import type { DataTableFeatures } from "@/components/ui/data-table"
+
 import { CellAction } from "./cell-action"
 
 export type BillboardColumn = {
@@ -10,7 +12,7 @@ export type BillboardColumn = {
   createdAt: string;
 }
 
-export const columns: ColumnDef<BillboardColumn>[] = [
+export const columns: ColumnDef<DataTableFeatures, BillboardColumn>[] = [
   {
     accessorKey: "label",
     header: "Label",

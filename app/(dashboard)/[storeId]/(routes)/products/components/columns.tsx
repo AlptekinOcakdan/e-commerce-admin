@@ -2,6 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
+import type { DataTableFeatures } from "@/components/ui/data-table"
+
 import { CellAction } from "./cell-action"
 
 export type ProductColumn = {
@@ -16,7 +18,7 @@ export type ProductColumn = {
   isArchived: boolean;
 }
 
-export const columns: ColumnDef<ProductColumn>[] = [
+export const columns: ColumnDef<DataTableFeatures, ProductColumn>[] = [
   {
     accessorKey: "name",
     header: "Name",

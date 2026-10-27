@@ -4,6 +4,7 @@ import { CldUploadWidget } from 'next-cloudinary';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import { ImagePlus, Trash } from 'lucide-react';
 
@@ -21,6 +22,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   value
 }) => {
   const [isMounted, setIsMounted] = useState(false);
+  const [url, setUrl] = useState('');
 
   useEffect(() => {
     setIsMounted(true);
@@ -49,11 +51,35 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               className="object-cover"
               alt="Image"
               src={url}
+              // pasted URLs can be on any host; only the hosts in next.config remotePatterns go through the optimizer
+              unoptimized={!/^https:\/\/(res\.cloudinary\.com|images\.unsplash\.com)\//.test(url)}
             />
           </div>
         ))}
       </div>
-      <CldUploadWidget onUpload={onUpload} uploadPreset="gvx66luj">
+      {/* The upload widget needs a Cloudinary cloud name; without one, accept a pasted image URL instead. */}
+      {!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ? (
+        <div className="flex max-w-xl items-center gap-2">
+          <Input
+            type="url"
+            disabled={disabled}
+            placeholder="Paste an image URL (https://...)"
+            aria-label="Image URL"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+          />
+          <Button
+            type="button"
+            disabled={disabled || !/^https?:\/\/\S+$/.test(url.trim())}
+            variant="secondary"
+            onClick={() => { onChange(url.trim()); setUrl(''); }}
+          >
+            <ImagePlus className="h-4 w-4 mr-2" />
+            Add Image
+          </Button>
+        </div>
+      ) : (
+      <CldUploadWidget onSuccess={onUpload} uploadPreset="gvx66luj">
         {({ open }) => {
           const onClick = () => {
             open();
@@ -72,6 +98,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           );
         }}
       </CldUploadWidget>
+      )}
     </div>
   );
 }

@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 
 import prismadb from "@/lib/prismadb";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@/lib/auth";
 
 export async function GET(
   req: Request,
-  { params }: { params: { sizeId: string } }
+  props: { params: Promise<{ sizeId: string }> }
 ) {
+  const params = await props.params;
   try {
     if (!params.sizeId) {
       return new NextResponse("Size id is required", { status: 400 });
@@ -27,10 +28,11 @@ export async function GET(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { sizeId: string, storeId: string } }
+  props: { params: Promise<{ sizeId: string, storeId: string }> }
 ) {
+  const params = await props.params;
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 403 });
@@ -67,10 +69,11 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { sizeId: string, storeId: string } }
+  props: { params: Promise<{ sizeId: string, storeId: string }> }
 ) {
+  const params = await props.params;
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
 
     const body = await req.json();
 

@@ -2,6 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
+import type { DataTableFeatures } from "@/components/ui/data-table"
+
 export type OrderColumn = {
   id: string;
   phone: string;
@@ -12,7 +14,7 @@ export type OrderColumn = {
   createdAt: string;
 }
 
-export const columns: ColumnDef<OrderColumn>[] = [
+export const columns: ColumnDef<DataTableFeatures, OrderColumn>[] = [
   {
     accessorKey: "products",
     header: "Products",

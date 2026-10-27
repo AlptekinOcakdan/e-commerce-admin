@@ -1,4 +1,5 @@
 import { ClerkProvider } from '@clerk/nextjs'
+import { isClerkEnabled } from '@/lib/auth'
 import { Inter } from 'next/font/google'
 
 import { ModalProvider } from '@/providers/modal-provider'
@@ -19,21 +20,24 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const content = (
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+      >
+        <ToastProvider />
+        <ModalProvider />
+        {children}
+      </ThemeProvider>
+  )
+
+  // Clerk Core 3 requires ClerkProvider inside <body>
   return (
-    <ClerkProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className={inter.className}>
-          <ThemeProvider 
-            attribute="class" 
-            defaultTheme="system" 
-            enableSystem
-          >
-            <ToastProvider />
-            <ModalProvider />
-            {children}
-          </ThemeProvider>
+          {isClerkEnabled ? <ClerkProvider afterSignOutUrl="/">{content}</ClerkProvider> : content}
         </body>
       </html>
-    </ClerkProvider>
   )
 }

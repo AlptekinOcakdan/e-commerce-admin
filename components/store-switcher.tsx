@@ -65,8 +65,8 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
+          <CommandInput placeholder="Search store..." />
           <CommandList>
-            <CommandInput placeholder="Search store..." />
             <CommandEmpty>No store found.</CommandEmpty>
             <CommandGroup heading="Stores">
               {formattedItems.map((store) => (
@@ -88,9 +88,7 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
                 </CommandItem>
               ))}
             </CommandGroup>
-          </CommandList>
-          <CommandSeparator />
-          <CommandList>
+            <CommandSeparator />
             <CommandGroup>
               <CommandItem
                 onSelect={() => {

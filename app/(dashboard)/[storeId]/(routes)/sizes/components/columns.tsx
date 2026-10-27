@@ -2,6 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
+import type { DataTableFeatures } from "@/components/ui/data-table"
+
 import { CellAction } from "./cell-action"
 
 export type SizeColumn = {
@@ -11,7 +13,7 @@ export type SizeColumn = {
   createdAt: string;
 }
 
-export const columns: ColumnDef<SizeColumn>[] = [
+export const columns: ColumnDef<DataTableFeatures, SizeColumn>[] = [
   {
     accessorKey: "name",
     header: "Name",

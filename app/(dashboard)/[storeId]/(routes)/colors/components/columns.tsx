@@ -2,6 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
+import type { DataTableFeatures } from "@/components/ui/data-table"
+
 import { CellAction } from "./cell-action"
 
 export type ColorColumn = {
@@ -11,7 +13,7 @@ export type ColorColumn = {
   createdAt: string;
 }
 
-export const columns: ColumnDef<ColorColumn>[] = [
+export const columns: ColumnDef<DataTableFeatures, ColorColumn>[] = [
   {
     accessorKey: "name",
     header: "Name",

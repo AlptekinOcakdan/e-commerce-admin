@@ -4,11 +4,17 @@ import { useState } from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
+  columnFilteringFeature,
+  createFilteredRowModel,
+  createPaginatedRowModel,
+  filterFn_includesString,
   flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  useReactTable,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  columnVisibilityFeature,
+  RowData,
+  tableFeatures,
+  useTable,
 } from "@tanstack/react-table"
 
 import {
@@ -22,25 +28,37 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
+// TanStack Table v9: features and row models must be registered explicitly.
+const features = tableFeatures({
+  columnFilteringFeature,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  columnVisibilityFeature,
+  filteredRowModel: createFilteredRowModel(),
+  paginatedRowModel: createPaginatedRowModel(),
+  filterFns: { includesString: filterFn_includesString },
+})
+
+export type DataTableFeatures = typeof features
+
+interface DataTableProps<TData extends RowData> {
+  // TValue varies per column, so the array uses `any` (as in the TanStack docs).
+  columns: ColumnDef<DataTableFeatures, TData, any>[]
   data: TData[],
   searchKey: string;
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends RowData>({
   columns,
   data,
   searchKey,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
     state: {
       columnFilters,
     }
